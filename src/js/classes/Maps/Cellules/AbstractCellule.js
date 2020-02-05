@@ -1,3 +1,4 @@
+var RADIUSCELLULE = 30;
 
 class Cellule {
 
@@ -7,7 +8,7 @@ class Cellule {
             throw new TypeError("La classe Cellule est un classe abstraite. Créez un classe fille pour l'utiliser.");
         }
 
-        this.radius = 30;
+        this.radius = RADIUSCELLULE;
 
 
         this.posx = coordx * this.radius;
@@ -21,12 +22,16 @@ class Cellule {
         this.objectCellule = null;
     }
 
-    createCellule (scene) {
+    isCliqued (actionManager) {
+        console.log(this, event);
+    }
+
+    createCellule (scene, camera) {
         let color;
         if ((this.coordx%2 == 0 && this.coordz%2 == 0) || (this.coordx%2 == 1 && this.coordz%2 == 1)) { color = new BABYLON.Color4(1, 1, 1, 1); }
         else { color = new BABYLON.Color4(0, 0, 0, 0); }
 
-        this.objectCellule = BABYLON.MeshBuilder.CreateBox("myBox", {height: 0.1 + this.posy,
+        this.objectCellule = BABYLON.MeshBuilder.CreateBox("cellule", {height: 0.1 + this.posy,
                                                                     depth: this.radius,
                                                                     width: this.radius,
                                                                     faceColors: [color, color, color, color, color, color]}, scene);
@@ -36,6 +41,23 @@ class Cellule {
         this.objectCellule.position.x = this.posx;
         this.objectCellule.position.y = this.posy / 2;
         this.objectCellule.position.z = this.posz;
+
+        this.objectCellule.actionManager = new BABYLON.ActionManager(scene);
+        this.objectCellule.actionManager.registerAction(
+            new BABYLON.InterpolateValueAction (
+                BABYLON.ActionManager.OnPickTrigger,
+                camera,
+                'alpha',
+                0,
+                500,
+                new BABYLON.PredicateCondition (
+                    this.objectCellule.actionManager,
+                    () => {
+                        this.isCliqued (this.objectCellule.actionManager);
+                    }
+                )
+            )
+        );
 
         return this.objectCellule;
     }

@@ -17,6 +17,10 @@ class Map {
 
     }
 
+    getCellule (x, z) {
+        return this.listCellules[z][x];
+    }
+
     resize () {
         try {
             this.engine.resize ();
@@ -40,7 +44,7 @@ class Map {
 
         this.listCellules.forEach ((line) => {
             line.forEach ((cellule) => {
-                cellule.createCellule (this.mainScene);
+                cellule.createCellule (this.mainScene, this.mainCamera);
             });
         });
 

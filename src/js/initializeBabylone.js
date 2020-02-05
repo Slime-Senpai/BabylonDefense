@@ -9,10 +9,17 @@ function init () {
     game = new GameTest ();
 
     resize ();
+
+    run ();
 }
 
 function resize () {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     game.resize ();
+}
+
+function run () {
+    game.move ();
+    requestAnimationFrame (run);
 }
