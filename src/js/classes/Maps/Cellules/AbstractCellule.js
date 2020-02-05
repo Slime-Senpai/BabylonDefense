@@ -10,7 +10,6 @@ class Cellule {
 
         this.radius = RADIUSCELLULE;
 
-
         this.posx = coordx * this.radius;
         this.posy = coordy;
         this.posz = coordz * this.radius;
@@ -19,11 +18,14 @@ class Cellule {
         this.coordy = coordy;
         this.coordz = coordz;
 
+        this.name = "undefined";
+        
         this.objectCellule = null;
     }
 
     isCliqued (actionManager) {
-        console.log(this, event);
+        // console.log(this, event, actionManager);
+        game.createMenu (this);
     }
 
     createCellule (scene, camera) {

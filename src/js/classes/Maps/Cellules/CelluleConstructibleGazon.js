@@ -4,6 +4,8 @@ class CelluleGazon extends CelluleConstructible {
 
     constructor (coordx, coordy, coordz) {
         super (coordx, coordy, coordz);
+
+        this.name = "Gazon";
     }
 
     createCellule (scene) {
