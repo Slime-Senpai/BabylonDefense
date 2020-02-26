@@ -4,6 +4,7 @@ class CelluleConstructible extends Cellule {
     constructor (coordx, coordy, coordz) {
         super (coordx, coordy, coordz);
         this.tower = null;
+        this.name = "CelluleConstructible";
     }
 
     monter (n) {

@@ -18,7 +18,7 @@ class Cellule {
         this.coordy = coordy;
         this.coordz = coordz;
 
-        this.name = "undefined";
+        this.name = "Cellule";
         
         this.objectCellule = null;
     }
@@ -28,10 +28,18 @@ class Cellule {
         game.createMenu (this);
     }
 
-    createCellule (scene, camera) {
+    getCelluleColor() {
         let color;
-        if ((this.coordx%2 == 0 && this.coordz%2 == 0) || (this.coordx%2 == 1 && this.coordz%2 == 1)) { color = new BABYLON.Color4(1, 1, 1, 1); }
-        else { color = new BABYLON.Color4(0, 0, 0, 0); }
+        if ((this.coordx%2 == 0 && this.coordz%2 == 0) || (this.coordx%2 == 1 && this.coordz%2 == 1)) {
+            color = new BABYLON.Color4(1, 1, 1, 1);
+        }else { 
+            color = new BABYLON.Color4(0, 0, 0, 0); 
+        }
+        return color;
+    }
+
+    createCellule (scene, camera) {
+        let color = this.getCelluleColor();
 
         this.objectCellule = BABYLON.MeshBuilder.CreateBox("cellule", {height: 0.1 + this.posy,
                                                                     depth: this.radius,

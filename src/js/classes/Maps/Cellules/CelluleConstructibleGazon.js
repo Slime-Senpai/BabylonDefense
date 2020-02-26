@@ -5,7 +5,11 @@ class CelluleGazon extends CelluleConstructible {
     constructor (coordx, coordy, coordz) {
         super (coordx, coordy, coordz);
 
-        this.name = "Gazon";
+        this.name = "CelluleConstructibleGazon";
+    }
+
+    getCelluleColor() {
+        return new BABYLON.Color4(0, 0.8, 0, 1);
     }
 
     createCellule (scene) {

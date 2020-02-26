@@ -1,7 +1,7 @@
 
 class Minion {
 
-    constructor (pvmax, speed, cellule) {
+    constructor(pvmax, speed, cellule) {
         this.pvmax = pvmax;
         this.speed = speed;
 
@@ -26,13 +26,13 @@ class Minion {
 
 
 
-    getActualLife () { return this.actualpv; }
+    getActualLife() { return this.actualpv; }
 
-    createMinion (scene) {
+    createMinion(scene) {
 
     }
 
-    moveTo (cellule) {
+    moveTo(cellule) {
         this.visex = cellule.posx;
         this.visey = cellule.posy;
         this.visez = cellule.posz;
@@ -65,7 +65,7 @@ class Minion {
         }
     }
 
-    move (actualCell) {
+    move(actualCell) {
         if (this.visex - this.vx <= this.posx && this.visex + this.vx >= this.posx) { this.vx = 0; }
         if (this.visez - this.vz <= this.posz && this.visez + this.vz >= this.posz) { this.vz = 0; }
         this.posx += this.vx;
@@ -75,7 +75,7 @@ class Minion {
         if (this.posy < 0) { this.posy = 0; }
 
         this.body.forEach((member) => {
-            member.part.position = new BABYLON.Vector3 (this.posx + member.vector.x, actualCell.posy + member.vector.y + this.height / 2, this.posz + member.vector.z);
+            member.part.position = new BABYLON.Vector3(this.posx + member.vector.x, actualCell.posy + member.vector.y + this.height / 2, this.posz + member.vector.z);
         });
     }
 }
