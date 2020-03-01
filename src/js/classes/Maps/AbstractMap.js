@@ -1,12 +1,14 @@
 
 class Map {
 
-    constructor () {
+    constructor (game) {
         // Map est un classe abstraite !
         if (this.constructor === Map) {
             throw new TypeError("La classe Map est un classe abstraite. Créez un classe fille pour l'utiliser.");
         }
-
+        
+        this.game = game;
+        
         this.engine = this.createDefaultEngine ();
 
         this.engine.runRenderLoop(() => {

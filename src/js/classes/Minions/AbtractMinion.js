@@ -22,11 +22,25 @@ class Minion {
 
         this.actualpv = this.pvmax;
         this.body = [];
+
+        this.isDead = false;
     }
 
 
 
     getActualLife() { return this.actualpv; }
+
+    die() {
+        console.log("dead");
+        this.isDead = true;
+    }
+
+    removeLife(damage) {
+        this.actualpv -= damage;
+        if(this.actualpv <= 0){
+            this.die();
+        }
+    }
 
     createMinion(scene) {
 

@@ -4,7 +4,7 @@ class GameTest extends Game {
     constructor() {
         super();
 
-        this.map = new MapTest(16, 16);
+        this.map = new MapTest(16, 16, this);
 
         this.actualWorkers = 10;
         this.actualGold = 1000;

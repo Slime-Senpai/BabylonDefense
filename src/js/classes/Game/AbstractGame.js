@@ -24,6 +24,8 @@ class Game {
         this.map = null;
 
         this.actualMenu = null;
+
+        this.listTowers = [];
     }
 
     // fonctions appelée par un clic utilisateur sur une cellule
@@ -70,10 +72,22 @@ class Game {
     move() {
         this.wave.spawn();
         if(this.listMinions.length > 0){
+            for(let i=0; i<this.listMinions.length; i++){
+                if(this.listMinions[i] != null && this.listMinions[i].isDead == true){
+                    this.listMinions.splice(i, 1);
+                    console.log(this.listMinions);
+                }
+            }
             this.listMinions.forEach((minion) => {
                 //this.map.getCellule(((minion.posx + RADIUSCELLULE / 2) / RADIUSCELLULE) | 0, ((minion.posy + RADIUSCELLULE / 2) / RADIUSCELLULE) | 0).color = new BABYLON.Color4(0, 0, 1, 1);
                 //this.map.getCellule(((minion.posx + RADIUSCELLULE / 2) / RADIUSCELLULE) | 0, ((minion.posy + RADIUSCELLULE / 2) / RADIUSCELLULE) | 0).createCellule(this.map.mainScene, this.map.mainCamera);
                 minion.move(this.map.getCellule(((minion.posz + RADIUSCELLULE / 2) / RADIUSCELLULE) | 0, ((minion.posx + RADIUSCELLULE / 2) / RADIUSCELLULE) | 0));
+            });
+        }
+
+        if(this.listTowers.length > 0){
+            this.listTowers.forEach(tower => {
+                tower.aim(null, this.listMinions);
             });
         }
     }

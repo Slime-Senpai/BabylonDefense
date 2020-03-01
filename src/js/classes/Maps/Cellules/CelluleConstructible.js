@@ -1,8 +1,9 @@
 
 class CelluleConstructible extends Cellule {
 
-    constructor (coordx, coordy, coordz) {
+    constructor (coordx, coordy, coordz, game) {
         super (coordx, coordy, coordz);
+        this.game = game;
         this.tower = null;
         this.name = "CelluleConstructible";
     }
@@ -14,8 +15,9 @@ class CelluleConstructible extends Cellule {
         catch (e) { }
     }
 
-    setTower (classTower) {
+    setTower (classTower, game) {
         this.tower = new classTower (this.posx, this.posy, this.posz);
+        game.listTowers.push(this.tower);
     }
 
     createCellule (scene) {

@@ -84,5 +84,12 @@ class TowerTest extends Tower {
     chapeau.position.x = this.posx;
     chapeau.position.y = this.posy + this.height * 0.8;
     chapeau.position.z = this.posz;
+
+    this.body.push({ "part": lesPieds, "vector": { x: 0, y: this.height * 0.1 / 2, z: 0 } });
+    this.body.push({ "part": base, "vector": { x: 0, y: this.height / 2, z: 0 } });
+    this.body.push({ "part": chapeau, "vector": { x: 0, y: this.height * 0.8, z: 0 } });
+    this.body.push({ "part": laCeriseSurLeChapeau, "vector": { x: 0, y: this.height, z: 0 } });
+    this.body.push({ "part": petiteMerdouille, "vector": { x: Math.cos(2 * i * Math.PI / nbMerdouilles) * 6, y: this.height * 0.8, z: Math.sin(2 * i * Math.PI / nbMerdouilles) * 6 } });
+
   }
 }
