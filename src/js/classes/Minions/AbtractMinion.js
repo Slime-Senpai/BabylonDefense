@@ -75,6 +75,7 @@ class Minion {
         if (this.posy < 0) { this.posy = 0; }
 
         this.body.forEach((member) => {
+            //console.log(actualCell);
             member.part.position = new BABYLON.Vector3(this.posx + member.vector.x, actualCell.posy + member.vector.y + this.height / 2, this.posz + member.vector.z);
         });
     }

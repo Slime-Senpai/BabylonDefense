@@ -18,7 +18,10 @@ class Map {
     }
 
     getCellule (x, z) {
-        return this.listCellules[z][x];
+        if(this.listCellules.length > z && z >= 0 && this.listCellules[z].length > x && x >= 0){
+            return this.listCellules[z][x];
+        }
+        return this.listCellules[0][0];
     }
 
     resize () {

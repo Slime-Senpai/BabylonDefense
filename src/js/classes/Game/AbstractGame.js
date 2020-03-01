@@ -68,9 +68,14 @@ class Game {
     }
 
     move() {
-        this.listMinions.forEach((minion) => {
-            minion.move(this.map.getCellule(((minion.posx + RADIUSCELLULE / 2) / RADIUSCELLULE) | 0, ((minion.posy + RADIUSCELLULE / 2) / RADIUSCELLULE) | 0));
-        });
+        this.wave.spawn();
+        if(this.listMinions.length > 0){
+            this.listMinions.forEach((minion) => {
+                //this.map.getCellule(((minion.posx + RADIUSCELLULE / 2) / RADIUSCELLULE) | 0, ((minion.posy + RADIUSCELLULE / 2) / RADIUSCELLULE) | 0).color = new BABYLON.Color4(0, 0, 1, 1);
+                //this.map.getCellule(((minion.posx + RADIUSCELLULE / 2) / RADIUSCELLULE) | 0, ((minion.posy + RADIUSCELLULE / 2) / RADIUSCELLULE) | 0).createCellule(this.map.mainScene, this.map.mainCamera);
+                minion.move(this.map.getCellule(((minion.posz + RADIUSCELLULE / 2) / RADIUSCELLULE) | 0, ((minion.posx + RADIUSCELLULE / 2) / RADIUSCELLULE) | 0));
+            });
+        }
     }
 
     resize() {

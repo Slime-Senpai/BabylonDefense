@@ -21,6 +21,7 @@ class Cellule {
         this.name = "Cellule";
         
         this.objectCellule = null;
+        this.color = null;
     }
 
     isCliqued (actionManager) {
@@ -29,13 +30,14 @@ class Cellule {
     }
 
     getCelluleColor() {
-        let color;
-        if ((this.coordx%2 == 0 && this.coordz%2 == 0) || (this.coordx%2 == 1 && this.coordz%2 == 1)) {
-            color = new BABYLON.Color4(1, 1, 1, 1);
-        }else { 
-            color = new BABYLON.Color4(0, 0, 0, 0); 
+        if(this.color == null){
+            if ((this.coordx%2 == 0 && this.coordz%2 == 0) || (this.coordx%2 == 1 && this.coordz%2 == 1)) {
+                this.color = new BABYLON.Color4(1, 1, 1, 1);
+            }else { 
+                this.color = new BABYLON.Color4(0, 0, 0, 0); 
+            }
         }
-        return color;
+        return this.color;
     }
 
     createCellule (scene, camera) {

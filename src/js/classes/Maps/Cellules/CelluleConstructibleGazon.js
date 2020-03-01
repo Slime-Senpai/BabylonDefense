@@ -8,9 +8,9 @@ class CelluleGazon extends CelluleConstructible {
         this.name = "CelluleConstructibleGazon";
     }
 
-    getCelluleColor() {
+    /*getCelluleColor() {
         return new BABYLON.Color4(0, 0.8, 0, 1);
-    }
+    }*/
 
     createCellule (scene) {
         super.createCellule (scene);
