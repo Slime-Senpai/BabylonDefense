@@ -41,117 +41,130 @@ class Map {
         this.mainScene = new BABYLON.Scene(this.engine);
         //this.mainCamera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, BABYLON.Vector3.Zero(), this.mainScene);
 
-        this.mainCamera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 200, 0), this.mainScene);
+        this.mainCamera = new BABYLON.FollowCamera("camera1", new BABYLON.Vector3(0, 200, 0), this.mainScene);
         this.mainCamera.setTarget(new BABYLON.Vector3(0, 0, 200));
+        this.mainCamera.radius = 300;
+        //this.mainCamera.heightOffset = 3; // how high above the object to place the camera
+   this.mainCamera.rotationOffset = 90; // the viewing angle
+   this.mainCamera.cameraAcceleration = 0; // how fast to move
+   this.mainCamera.maxCameraSpeed = 50; // speed limit
+
         this.mainCamera.attachControl(canvas, true);
-        this.mainCamera.inputs.removeMouse();
-        this.mainCamera.inputs.removeByType("FreeCameraKeyboardMoveInput");
+
+        var focus = BABYLON.Mesh.CreateSphere("focus", 8, 1.8, this.mainScene);
+        focus.position.y = 0.9;
+        focus.isVisible = false
+
+    focus.speed = new BABYLON.Vector3(0, 0, 1);
+    focus.nextspeed = new BABYLON.Vector3.Zero();
+    // Keypress events
+        window.keyisdown = {};
+        window.addEventListener('keydown', function (event) {
+            window.keyisdown[event.keyCode] = true;
+        });
+
+        window.addEventListener('keyup', function (event) {
+            window.keyisdown[event.keyCode] = false;
+        });
+
+        window.tempv = new BABYLON.Vector3.Zero();
+
+        this.mainScene.registerBeforeRender(() => {
+            // Player speed
+            var v = 1.5;
+            focus.nextspeed.x = 0;
+            focus.nextspeed.z = 0;
+
+            if (window.keyisdown[37]) {
+                focus.nextspeed.x = -v;
+                focus.nextspeed.z = -v;
+            }
+            if (window.keyisdown[39]) {
+                focus.nextspeed.x = v;
+                focus.nextspeed.z = v;
+            }
+            if (window.keyisdown[38]) {
+                focus.nextspeed.x = -v;
+                focus.nextspeed.z = v;
+            }
+            if (window.keyisdown[40]) {
+                focus.nextspeed.x = v;
+                focus.nextspeed.z = -v;
+            }
+
+            focus.speed = BABYLON.Vector3.Lerp(focus.speed, focus.nextspeed, 0.1);
+
+            focus.moveWithCollisions(focus.speed);
+/*
+            if (focus.position.x > 500.0) { focus.position.x = 500.0; }
+            if (focus.position.x < -50.0) { focus.position.x = -50.0; }
+            if (focus.position.z > 500.0) { focus.position.z = 500.0; }
+            if (focus.position.z < -50.0) { focus.position.z = -50.0; }
+*/
+            //focus.nexttorch = lightImpostor.getAbsolutePosition();
+            //torch.position.copyFrom(focus.nexttorch);
+            //torch.intensity = 0.7 + Math.random() * 0.1;
+            //torch.position.x += Math.random() * 0.125 - 0.0625;
+            //torch.position.z += Math.random() * 0.125 - 0.0625;
 
 
-        // Create our own manager:
-        var FreeCameraKeyboardRestrictedInput = function () {
-                this._keys = [];
-                this.keysUp = [38, 90];
-                this.keysDown = [40, 83];
-                this.keysLeft = [37, 81];
-                this.keysRight = [39, 68];
-                this.speed = 0.5;
+            this.mainCamera.position.x = focus.position.x + 25;
+            this.mainCamera.position.y = 200;
+            this.mainCamera.position.z = focus.position.z - 25;
+        });
+
+        var getGroundPosition = () => {
+            console.log(this.mainScene.pointerX | 0, this.mainScene.pointerY | 0);
+            var pickinfo = this.mainScene.pick(this.mainScene.pointerX | 0, this.mainScene.pointerY | 0);
+            if (pickinfo.hit) {
+                return new BABYLON.Vector3(pickinfo.pickedPoint.x | 0, 0, pickinfo.pickedPoint.z | 0);
+            }
+            return null;
         }
 
-        // Hooking keyboard events
-        FreeCameraKeyboardRestrictedInput.prototype.attachControl = function (element, noPreventDefault) {
-            var _this = this;
-            if (!this._onKeyDown) {
-                element.tabIndex = 1;
-                this._onKeyDown = function (evt) {
-                    if (_this.keysLeft.indexOf(evt.keyCode) !== -1 ||
-                        _this.keysRight.indexOf(evt.keyCode) !== -1 ||
-                        _this.keysUp.indexOf(evt.keyCode) !== -1 ||
-                        _this.keysDown.indexOf(evt.keyCode) !== -1) {
-                        var index = _this._keys.indexOf(evt.keyCode);
-                        if (index === -1) {
-                            _this._keys.push(evt.keyCode);
-                        }
-                        if (!noPreventDefault) {
-                            evt.preventDefault();
-                        }
-                    }
-                };
-                this._onKeyUp = function (evt) {
-                    if (_this.keysLeft.indexOf(evt.keyCode) !== -1 ||
-                        _this.keysRight.indexOf(evt.keyCode) !== -1 ||
-                        _this.keysUp.indexOf(evt.keyCode) !== -1 ||
-                        _this.keysDown.indexOf(evt.keyCode) !== -1) {
-                        var index = _this._keys.indexOf(evt.keyCode);
-                        if (index >= 0) {
-                            _this._keys.splice(index, 1);
-                        }
-                        if (!noPreventDefault) {
-                            evt.preventDefault();
-                        }
-                    }
-                };
+        this.startingPoint;
 
-                element.addEventListener("keydown", this._onKeyDown, false);
-                element.addEventListener("keyup", this._onKeyUp, false);
-                BABYLON.Tools.RegisterTopRootEvents(canvas, [
-                    { name: "blur", handler: this._onLostFocus }
-                ]);
+        let pointerDown = (mesh) => {
+            this.startingPoint = getGroundPosition();
+        }
+        let pointerUp = () => {
+            if (this.startingPoint) {
+                this.startingPoint = null;
+                return;
             }
-        };
+        }
 
-        // Unhook
-        FreeCameraKeyboardRestrictedInput.prototype.detachControl = function (element) {
-            if (this._onKeyDown) {
-                element.removeEventListener("keydown", this._onKeyDown);
-                element.removeEventListener("keyup", this._onKeyUp);
-                BABYLON.Tools.UnregisterTopRootEvents(canvas, [
-                    { name: "blur", handler: this._onLostFocus }
-                ]);
-                this._keys = [];
-                this._onKeyDown = null;
-                this._onKeyUp = null;
+        let pointerMove = () => {
+            if (!this.startingPoint) {
+                return;
             }
-        };
-
-        // This function is called by the system on every frame
-        FreeCameraKeyboardRestrictedInput.prototype.checkInputs = function () {
-            if (this._onKeyDown) {
-                // Keyboard
-                for (var index = 0; index < this._keys.length; index++) {
-                    var keyCode = this._keys[index];
-                    if (this.keysLeft.indexOf(keyCode) !== -1) {
-                        this.camera.cameraDirection.z += this.speed;
-                        this.camera.cameraDirection.x -= this.speed;
-                    }
-                    else if (this.keysRight.indexOf(keyCode) !== -1) {
-                        this.camera.cameraDirection.z -= this.speed;
-                        this.camera.cameraDirection.x += this.speed;
-                    }
-                    else if (this.keysUp.indexOf(keyCode) !== -1) {
-                        this.camera.cameraDirection.z += this.speed;
-                        this.camera.cameraDirection.x += this.speed;
-                    }
-                    else if (this.keysDown.indexOf(keyCode) !== -1) {
-                        this.camera.cameraDirection.z -= this.speed;
-                        this.camera.cameraDirection.x -= this.speed;
-                    }
-                }
+            var current = getGroundPosition();
+            if (!current) {
+                return;
             }
-        };
-        FreeCameraKeyboardRestrictedInput.prototype.getTypeName = function () {
-            return "FreeCameraKeyboardRestrictedInput";
-        };
-        FreeCameraKeyboardRestrictedInput.prototype._onLostFocus = function (e) {
-            this._keys = [];
-        };
-        FreeCameraKeyboardRestrictedInput.prototype.getSimpleName = function () {
-            return "keyboardRestricted";
-        };
 
-        // Connect to camera:
-        this.mainCamera.inputs.add(new FreeCameraKeyboardRestrictedInput());
+            //console.log(current, this.startingPoint);
 
+            var diff = current.subtract(this.startingPoint);
+            console.log(this.startingPoint, current, new BABYLON.Vector3(diff.x | 0, 0, diff.z | 0));
+            focus.position.subtractInPlace(new BABYLON.Vector3(diff.x | 0, 0, diff.z | 0));
+
+            //this.startingPoint = current;
+        }
+
+        this.mainScene.onPointerObservable.add((pointerInfo) => {
+            switch (pointerInfo.type) {
+          			case BABYLON.PointerEventTypes.POINTERDOWN:
+            				pointerDown();
+            				break;
+          			case BABYLON.PointerEventTypes.POINTERUP:
+                    pointerUp();
+            				break;
+          			case BABYLON.PointerEventTypes.POINTERMOVE:
+                    pointerMove();
+            				break;
+            }
+        });
         var light1 = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(500, 1500, 500), this.mainScene);
 
         this.listCellules.forEach ((line) => {
