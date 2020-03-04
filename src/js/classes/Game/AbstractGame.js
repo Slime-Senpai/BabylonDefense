@@ -72,12 +72,18 @@ class Game {
     move() {
         this.wave.spawn();
         if(this.listMinions.length > 0){
-            for(let i=0; i<this.listMinions.length; i++){
-                if(this.listMinions[i] != null && this.listMinions[i].isDead == true){
-                    this.listMinions.splice(i, 1);
-                    console.log(this.listMinions);
+          let listMinionsToRemove = [];
+
+            for(let i=this.listMinions.length - 1; i>= 0; i--){
+                if (this.listMinions[i] != null && this.listMinions[i].isDead){
+                    listMinionsToRemove.push(i);
                 }
             }
+
+            for (let i=listMinionsToRemove.length -1; i>=0; i--) {
+                this.listMinions.splice(listMinionsToRemove[i], 1);
+            }
+
             this.listMinions.forEach((minion) => {
                 //this.map.getCellule(((minion.posx + RADIUSCELLULE / 2) / RADIUSCELLULE) | 0, ((minion.posy + RADIUSCELLULE / 2) / RADIUSCELLULE) | 0).color = new BABYLON.Color4(0, 0, 1, 1);
                 //this.map.getCellule(((minion.posx + RADIUSCELLULE / 2) / RADIUSCELLULE) | 0, ((minion.posy + RADIUSCELLULE / 2) / RADIUSCELLULE) | 0).createCellule(this.map.mainScene, this.map.mainCamera);
