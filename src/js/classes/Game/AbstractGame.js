@@ -32,8 +32,7 @@ class Game {
     // fait apparaître un menu sur le côté de l'écran avec une description de la cellule cliquée
     createMenu(cellule) {
         // commençons par drop un éventuel menu déjà présent
-
-            destroyInformations ();
+        destroyInformations ();
 
         // créons maintenant l'objet
         this.actualMenu = document.createElement("div");
@@ -42,8 +41,7 @@ class Game {
         }
 
         //this.actualMenu.appendChild(this.createNameCoords(cellule));
-        this.createNameCoords(cellule)
-        document.body.appendChild(this.actualMenu);
+        this.createNameCoords(cellule);
     }
 
     createNameCoords(cellule) {
@@ -52,6 +50,7 @@ class Game {
         this.actualMenu.setTitle (cellule.name);
         this.actualMenu.setCoords(cellule.coordx, cellule.coordy, cellule.coordz);
 
+        this.actualMenu.addTableTurret (cellule, [TowerTest, TowerTestDeux]);
         /*let mainDiv = document.createElement("div");
         let table = document.createElement("table");
         let caption = document.createElement("caption");

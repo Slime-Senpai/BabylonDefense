@@ -5,6 +5,13 @@ class TowerTestDeux extends Tower {
         super (coordx, coordy, coordz);
 
         this.height = 50;
+        this.name = "Tour Test 2";
+
+
+        this.range = 1000;
+        this.damage = 3;
+
+        this.maxCooldown = 1;
     }
 
     drawTower (scene) {

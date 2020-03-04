@@ -5,6 +5,7 @@ class TowerTest extends Tower {
     super(coordx, coordy, coordz);
 
     this.height = 15;
+    this.name = "Tour Test 1";
   }
 
   drawTower(scene) {
@@ -85,6 +86,7 @@ class TowerTest extends Tower {
     chapeau.position.y = this.posy + this.height * 0.8;
     chapeau.position.z = this.posz;
 
+    let i = 1;
     this.body.push({ "part": lesPieds, "vector": { x: 0, y: this.height * 0.1 / 2, z: 0 } });
     this.body.push({ "part": base, "vector": { x: 0, y: this.height / 2, z: 0 } });
     this.body.push({ "part": chapeau, "vector": { x: 0, y: this.height * 0.8, z: 0 } });

@@ -2,6 +2,8 @@
 window.onload = init;
 window.onresize = resize;
 
+var SIDEWIDTHCELLULE = 50;
+
 var canvas, game;
 function init () {
     canvas = document.querySelector ("#canvasBabylon");

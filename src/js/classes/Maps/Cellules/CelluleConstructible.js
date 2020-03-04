@@ -18,6 +18,7 @@ class CelluleConstructible extends Cellule {
     setTower (classTower, game) {
         this.tower = new classTower (this.posx, this.posy, this.posz);
         game.listTowers.push(this.tower);
+        console.log(game.listTowers);
     }
 
     createCellule (scene) {
@@ -27,5 +28,10 @@ class CelluleConstructible extends Cellule {
             return this.objectCellule, tower;
         }
         catch (e) { return this.objectCellule; }
+    }
+
+    placeClassTurret (classTurret) {
+        this.setTower (classTurret, game);
+        this.tower.drawTower (game.map.mainScene);
     }
 }

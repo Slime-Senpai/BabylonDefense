@@ -53,48 +53,6 @@ class Information {
         this.domCoordZ.innerHTML = z;
     }
 
-    setInformationsRessource (nbWorkers, qteRessource) {
-        if (!this.hasOwnProperty("domNbWorkers") && !this.hasOwnProperty("domQteRessource")) {
-            let table = document.createElement ("table");
-            let tr1 = document.createElement ("tr");
-            let tr2 = document.createElement ("tr");
-            let tr1td1 = document.createElement ("td");
-            let tr2td1 = document.createElement ("td");
-            this.domNbWorkers = document.createElement ("td");
-            this.domQteRessource = document.createElement ("td");
-            tr1td1.innerHTML = "Nombre d'exploitants";
-            tr2td1.innerHTML = "Ressource restante";
-
-            tr1.appendChild (tr1td1);
-            tr1.appendChild (this.domNbWorkers);
-            tr2.appendChild (tr2td1);
-            tr2.appendChild (this.domQteRessource);
-            table.appendChild (tr1);
-            table.appendChild (tr2);
-            this.addElementDom (table);
-        }
-
-        this.domNbWorkers.innerHTML = nbWorkers;
-        this.domQteRessource.innerHTML = qteRessource;
-    }
-
-    setInformationsTown (workers) {
-        if (!this.hasOwnProperty("domNbWorkers")) {
-            let table = document.createElement ("table");
-            let tr1 = document.createElement ("tr");
-            let tr1td1 = document.createElement ("td");
-            this.domNbWorkers = document.createElement ("td");
-            tr1td1.innerHTML = "Nombre de villageois";
-
-            tr1.appendChild (tr1td1);
-            tr1.appendChild (this.domNbWorkers);
-            table.appendChild (tr1);
-            this.addElementDom (table);
-        }
-
-        this.domNbWorkers.innerHTML = workers;
-    }
-
     addButton (name, nameButton, toDo) {
         let table = document.createElement ("table");
         let tr = document.createElement ("tr");
@@ -125,24 +83,26 @@ class Information {
                 if (i * 2 + j < listClassTurrets.length) {
                     let tempTurret = new listClassTurrets[i * 2 + j] (0, 0);
                     let td = document.createElement ("td");
-                    let can = document.createElement ("canvas");
+                    let can = document.createElement ("button");
 
                     can.onclick = () => {
+                        console.log(cellule);
                         cellule.placeClassTurret (listClassTurrets[i * 2 + j]);
-                        cellule.showInformations ();
+                        //cellule.showInformations ();
                     }
-
+/*
                     can.width = SIDEWIDTHCELLULE;
                     can.height = SIDEWIDTHCELLULE;
                     can.style.border = "solid thin black";
                     can.style.backgroundColor = "ivory";
-                    can.title = tempTurret.name;
+                    can.title = tempTurret.name;*/
+                    can.innerHTML = tempTurret.name;
 
-                    let ctxcan = can.getContext ("2d");
+                    /*let ctxcan = can.getContext ("2d");
                     ctxcan.save ();
                     ctxcan.translate (SIDEWIDTHCELLULE / 2, SIDEWIDTHCELLULE / 2);
                     tempTurret.drawTurret (ctxcan);
-                    ctxcan.restore ();
+                    ctxcan.restore ();*/
 
                     td.appendChild (can);
                     tr.appendChild (td);
