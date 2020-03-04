@@ -31,13 +31,10 @@ class Minion {
     getActualLife() { return this.actualpv; }
 
     die() {
-        console.log("dead");
         this.isDead = true;
-
         this.body.forEach((member) => {
-            //console.log(member);
             member.part.dispose();
-            //member = null;
+            member = null;
         });
     }
 

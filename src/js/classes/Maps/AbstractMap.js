@@ -6,9 +6,9 @@ class Map {
         if (this.constructor === Map) {
             throw new TypeError("La classe Map est un classe abstraite. Créez un classe fille pour l'utiliser.");
         }
-        
+
         this.game = game;
-        
+
         this.engine = this.createDefaultEngine ();
 
         this.engine.runRenderLoop(() => {
@@ -41,12 +41,12 @@ class Map {
         this.mainScene = new BABYLON.Scene(this.engine);
         //this.mainCamera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, BABYLON.Vector3.Zero(), this.mainScene);
 
-        this.mainCamera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 150, 0), this.mainScene);
-        this.mainCamera.setTarget(new BABYLON.Vector3(150, 0, 150));
+        this.mainCamera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 200, 0), this.mainScene);
+        this.mainCamera.setTarget(new BABYLON.Vector3(0, 0, 200));
         this.mainCamera.attachControl(canvas, true);
         this.mainCamera.inputs.removeMouse();
         this.mainCamera.inputs.removeByType("FreeCameraKeyboardMoveInput");
-        
+
 
         // Create our own manager:
         var FreeCameraKeyboardRestrictedInput = function () {
@@ -57,7 +57,7 @@ class Map {
                 this.keysRight = [39, 68];
                 this.speed = 0.5;
         }
-    
+
         // Hooking keyboard events
         FreeCameraKeyboardRestrictedInput.prototype.attachControl = function (element, noPreventDefault) {
             var _this = this;
@@ -91,7 +91,7 @@ class Map {
                         }
                     }
                 };
-    
+
                 element.addEventListener("keydown", this._onKeyDown, false);
                 element.addEventListener("keyup", this._onKeyUp, false);
                 BABYLON.Tools.RegisterTopRootEvents(canvas, [
@@ -99,7 +99,7 @@ class Map {
                 ]);
             }
         };
-    
+
         // Unhook
         FreeCameraKeyboardRestrictedInput.prototype.detachControl = function (element) {
             if (this._onKeyDown) {
@@ -113,29 +113,28 @@ class Map {
                 this._onKeyUp = null;
             }
         };
-    
+
         // This function is called by the system on every frame
         FreeCameraKeyboardRestrictedInput.prototype.checkInputs = function () {
             if (this._onKeyDown) {
-                var camera = this.camera;
                 // Keyboard
                 for (var index = 0; index < this._keys.length; index++) {
                     var keyCode = this._keys[index];
                     if (this.keysLeft.indexOf(keyCode) !== -1) {
-                        camera.cameraDirection.z += this.speed;
-                        camera.cameraDirection.x -= this.speed;
+                        this.camera.cameraDirection.z += this.speed;
+                        this.camera.cameraDirection.x -= this.speed;
                     }
                     else if (this.keysRight.indexOf(keyCode) !== -1) {
-                        camera.cameraDirection.z -= this.speed;
-                        camera.cameraDirection.x += this.speed;
+                        this.camera.cameraDirection.z -= this.speed;
+                        this.camera.cameraDirection.x += this.speed;
                     }
                     else if (this.keysUp.indexOf(keyCode) !== -1) {
-                        camera.cameraDirection.z += this.speed;
-                        camera.cameraDirection.x += this.speed;
+                        this.camera.cameraDirection.z += this.speed;
+                        this.camera.cameraDirection.x += this.speed;
                     }
                     else if (this.keysDown.indexOf(keyCode) !== -1) {
-                        camera.cameraDirection.z -= this.speed;
-                        camera.cameraDirection.x -= this.speed;
+                        this.camera.cameraDirection.z -= this.speed;
+                        this.camera.cameraDirection.x -= this.speed;
                     }
                 }
             }
@@ -149,11 +148,11 @@ class Map {
         FreeCameraKeyboardRestrictedInput.prototype.getSimpleName = function () {
             return "keyboardRestricted";
         };
-    
+
         // Connect to camera:
         this.mainCamera.inputs.add(new FreeCameraKeyboardRestrictedInput());
 
-        var light1 = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(-100, 100, -100), this.mainScene);
+        var light1 = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(500, 1500, 500), this.mainScene);
 
         this.listCellules.forEach ((line) => {
             line.forEach ((cellule) => {

@@ -20,6 +20,8 @@ class MapTest extends Map {
 
         for (let i = 5; i < 12; i++) {
             this.listCellules[i - 3][8].setTower(TowerTest, game);
+            this.listCellules[i-3][11].setTower (TowerTestDeux, game);
+
             this.listCellules[3][i].monter(5);
             this.listCellules[4][i].monter(10);
             this.listCellules[5][i].monter(15);
